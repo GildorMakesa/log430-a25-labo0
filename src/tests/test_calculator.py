@@ -11,5 +11,6 @@ def test_app():
     assert my_calculator.get_hello_message() == "== Calculatrice v1.0 =="
 
 def test_addition_bug():
+    my_calculator = Calculator()
     # Ce test va échouer car 2 + 2 est 4, et non 5.
-    assert addition(2, 2) == 4
+    assert my_calculator.addition(2, 2) == 4
