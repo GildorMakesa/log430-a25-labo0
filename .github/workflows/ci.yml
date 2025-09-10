@@ -40,5 +40,4 @@ jobs:
             cd /chemin/vers/votre/app/
             # Mettez à jour le code
             git pull
-            # Construisez et (re)démarrez le conteneur Docker
             docker-compose up -d --build
