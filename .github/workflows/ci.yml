@@ -27,8 +27,11 @@ jobs:
       - name: Debug SSH
         run: |
           echo "Test connexion SSH"
-          ssh -vvv -o StrictHostKeyChecking=no -i <(echo "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}") \
+          echo "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > id_rsa
+          chmod 600 id_rsa
+          ssh -vvv -o StrictHostKeyChecking=no -i id_rsa \
             ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "echo OK"
+
 
   deploy:
     runs-on: ubuntu-latest
