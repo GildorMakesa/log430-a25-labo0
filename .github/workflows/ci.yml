@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout dépôt
         uses: actions/checkout@v3
@@ -25,25 +25,19 @@ jobs:
           python -m pytest
         working-directory: src
 
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    steps:
       - name: Déploiement Docker
         run: |
           echo "🚀 Déploiement de l'application..."
-          
-          # Arrêter et supprimer l’ancien conteneur (si présent)
           docker stop my-calculator || true
           docker rm my-calculator || true
-
-          # Reconstruire l'image
           docker build -t labo0-calculator .
-
-          # Lancer un nouveau conteneur
           docker run -d --name my-calculator -p 5000:5000 labo0-calculator
 
       - name: Vérification du conteneur
         run: |
           echo "🔍 Vérification du conteneur..."
           docker ps | grep my-calculator
-
-          # (Optionnel) tester si le service répond sur le port 5000
-          sleep 5
-          curl -f http://localhost:5000 || echo "⚠️ L'application n'a pas répondu"
